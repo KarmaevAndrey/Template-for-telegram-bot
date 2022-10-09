@@ -1,13 +1,16 @@
 from baza_working import *
 from utis import *
-from token import *
+from setings import *
 
 
 # Sending a message with a link to a donation
 def menu(message, text="В меню"):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item_text_id = types.KeyboardButton(text_button_text)
+    item_text_= types.KeyboardButton(text_button_text)
     item_text = types.KeyboardButton(text_button_text)
-    markup3 = markup.add(item_text)
+
+    markup3 = markup.add(item_text).add(item_text).add(item_text)
     bot.send_message(message.chat.id, text, reply_markup=markup3)
 
 
