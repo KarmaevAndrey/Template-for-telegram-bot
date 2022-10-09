@@ -2,7 +2,6 @@ from baza_working import *
 from utis import *
 from setings import *
 
-
 # Sending a message with a link to a donation
 def menu(message, text="В меню"):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -23,8 +22,8 @@ def call_up_donate(message):
         url=tinkoff_url)
     markup.add(item_shere)
     bot.send_message(message.chat.id, f"Спасибо за поддержку🤗 я ОЧЕНЬ её ценю. Поэтому я не буду показывать "
-                                      f"тебе рекламу, но не забудь указать эти цифры в комментарии к донату."
-                                      f"⏩`{message.chat.id}`⏪",
+                     f"тебе рекламу, но не забудь указать эти цифры в комментарии к донату."
+                     f"⏩`{message.chat.id}`⏪",
                      reply_markup=markup, parse_mode='Markdown')
 
 
@@ -35,7 +34,8 @@ def my_tim(message, speed=0.7):
     msg = bot.send_message(message.chat.id, bar)
     for i in range(len(bar) - 1, -1, -1):
         j += 1
-        bot.edit_message_text(chat_id=message.chat.id, message_id=msg.message_id, text=str(bar[:i]) + "□" * j)
+        bot.edit_message_text(
+            chat_id=message.chat.id, message_id=msg.message_id, text=str(bar[:i]) + "□" * j)
         time.sleep(speed)
     bot.delete_message(chat_id=message.chat.id, message_id=msg.message_id)
 
@@ -48,18 +48,20 @@ def register_user(message, chat_id):
         my_tim()
         menu(message, 'Попробуйте сейчас!')
     except Exception:
-        bot.send_message(message.chat.id, '😭ОЙ... Что то пошло не так попробуйте ещё раз😕')
+        bot.send_message(
+            message.chat.id, '😭ОЙ... Что то пошло не так попробуйте ещё раз😕')
 
 
 def adding_user_sending_instructions(message, chat_id, is_old_user, ref_url=None):
     try:
         if not is_old_user:
             add_info_from_location(ref_url, chat_id)
-            menu(message, f'Привет, {str(message.from_user.first_name)}, давно не виделись.')
+            menu(
+                message, f'Привет, {str(message.from_user.first_name)}, давно не виделись.')
             sti = open('media/cherry.tgs', 'rb')
             bot.send_sticker(chat_id, sti)
         else:
-            if ref_url==None:
+            if ref_url == None:
                 bot_admin.send_message(admin_id, f"НОВЫЙ ПОЛЬЗОВАТЕЛЬ: @{message.chat.username}\n"
                                                  f"имя: {message.chat.username}\n"
                                                  f"фамилия: {message.from_user.last_name}\n")
@@ -79,16 +81,17 @@ def adding_user_sending_instructions(message, chat_id, is_old_user, ref_url=None
         pass
 
 
-
 @bot.message_handler(commands=['start'])
 def start(message):
     chat_id = int(message.from_user.id)
     is_old_user = not (json_is_old_user(chat_id))
     try:
         if is_old_user:
-            adding_user_sending_instructions(message, chat_id, is_old_user=True)
+            adding_user_sending_instructions(
+                message, chat_id, is_old_user=True)
         else:
-            menu(message, f'Привет, {str(message.from_user.first_name)}, давно не виделись.')
+            menu(
+                message, f'Привет, {str(message.from_user.first_name)}, давно не виделись.')
             sti = open('media/cherry.tgs', 'rb')
             bot.send_sticker(chat_id, sti)
     except Exception:
@@ -99,7 +102,8 @@ def start(message):
 def get_txt(message):
     try:
         mes_text = str(message.text)
-        bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
+        bot.delete_message(chat_id=message.chat.id,
+                           message_id=message.message_id)
         mci = message.chat.id
         if mes_text == text_button_text:
             bot.send_message(message.chat.id, "YESS")
@@ -118,4 +122,52 @@ def answer(call):
         bot.send_message(cmi, f"ERROR: 404 not fund {text_call}")
 
 
+
+
 bot.polling(none_stop=True)
+# import telebot
+# from telebot import types
+#
+# text = '.'
+#
+# but_master = "Я мастер!"
+# but_client = "Я клиент!"
+#
+# but_master_1 = "Text"
+# but_master_2 = "Text"
+# but_master_3 = "Text"
+# but_master_4 = "Text"
+#
+# bot = telebot.TeleBot('5741977374:AAEc5FVED6rUzoNGVl25wePgoONqz9Ouh-c')
+#
+#
+# @bot.message_handler(commands  = ['start'])
+# def start(message):
+#     markup = types.ReplyKeyboardMarkup(resize_keyboard = True, row_width = 2)
+#     item_text_master = types.KeyboardButton(but_master)
+#     item_text_client = types.KeyboardButton(but_client)
+#     markup1 = markup.add(item_text_master).add(item_text_client)
+#     bot.send_message(message.chat.id, f"Привет, {message.from_user.first_name}! Выбери кто ты", reply_markup = markup1)
+#
+#
+# @bot.message_handler(content_types = ['text'])
+# def get_txt(message):
+#     try:
+#         mes_text = str(message.text)
+#         print(mes_text)
+#         if mes_text == but_master:
+#             bot.send_message(message.chat.id, "Окей! Напиши свою специальность", parse_mode = 'html')
+#         if mes_text == but_client:
+#             markup = types.ReplyKeyboardMarkup(resize_keyboard = True, row_width = 2)
+#             item_text_master_1 = types.KeyboardButton(but_master_1)
+#             item_text_master_2 = types.KeyboardButton(but_master_2)
+#             item_text_master_3 = types.KeyboardButton(but_master_3)
+#             item_text_master_4 = types.KeyboardButton(but_master_4)
+#             markup1 = markup.add(item_text_master_1).add(item_text_master_2).add(item_text_master_3).add(item_text_master_4)
+#             bot.send_message(message.chat.id, "Окей! Выбери, на что ты хочешь записаться", reply_markup = markup1)
+#
+#     except Exception:
+#         bot.send_message(message.chat.id, '' )
+#
+#
+# bot.polling(none_stop=True)
